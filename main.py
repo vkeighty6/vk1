@@ -43,8 +43,9 @@ if page == "Proof of Identity":
             st.session_state['identity_step'] = 7  # Set identity_step to "DONE"
             st.experimental_rerun()  # Rerun to show "DONE" message
         elif doc_type == "Driving License":
-            st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
-            st.experimental_rerun()  # Rerun to go to Driving License upload page
+            # Directly go to "DONE" message if "Driving License" is selected
+            st.session_state['identity_step'] = 8  # Set identity_step to "DONE" for Driving License
+            st.experimental_rerun()  # Rerun to show "DONE" message
         else:
             st.error("Please select a document type.")
 
@@ -97,10 +98,16 @@ if page == "Proof of Identity":
             st.session_state['identity_step'] = 2  # Go back to Step 2
             st.experimental_rerun()  # Rerun to go back to Step 2
 
-    # DONE Page (Step 7)
+    # DONE Page (Step 7 for Passport)
     if st.session_state['identity_step'] == 7:
         st.subheader("DONE!")
         st.success("You have selected 'Passport' as your document type. No further action is required at this moment.")
+        st.write("Thank you for completing the selection!")
+
+    # DONE Page (Step 8 for Driving License)
+    if st.session_state['identity_step'] == 8:
+        st.subheader("DONE!")
+        st.success("You have selected 'Driving License' as your document type. No further action is required at this moment.")
         st.write("Thank you for completing the selection!")
 
 elif page == "Proof of Address":

@@ -6,8 +6,8 @@ if 'identity_step' not in st.session_state:
 if 'address_step' not in st.session_state:
     st.session_state['address_step'] = 1
 
-# Tab Navigation
-tabs = st.radio("Choose a process", ["Proof of Identity", "Proof of Address"], index=0)
+# Simulated Tabs using selectbox (Horizontal Tabs)
+tabs = st.selectbox("Select a process", ["Proof of Identity", "Proof of Address"], index=0)
 
 if tabs == "Proof of Identity":
     st.title("Proof of Identity")

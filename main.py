@@ -11,22 +11,28 @@ page = st.sidebar.radio("Go to", ["Proof of Identity", "Proof of Address"])
 if page == "Proof of Identity":
     st.title("Proof of Identity")
 
-    # Step 1: Country of Document Issuance
+    # Step 1: Country of Document Issuance and Identification Number
     if st.session_state['identity_step'] == 1:
         st.subheader("Step 1: In which country was your document issued?")
         country = st.selectbox("Select the country",
                                ["Select", "United States", "Canada", "United Kingdom", "Australia", "Other"])
 
+        # Add IDENTIFICATION NUMBER text field
+        identification_number = st.text_input("Identification Number", placeholder="Enter your identification number")
+
         # Check if country is selected before showing it
         if country != "Select":
             st.write("Country of Document Issuance: ", country)
 
+        if identification_number:
+            st.write("Identification Number: ", identification_number)
+
         if st.button("Next", key="next_step_1"):
-            if country != "Select":
+            if country != "Select" and identification_number:
                 st.session_state['identity_step'] = 2  # Move to Step 2: Select Document Type
                 st.experimental_rerun()  # Rerun to hide Step 1 and show Step 2
             else:
-                st.error("Please select a country before proceeding.")
+                st.error("Please select a country and provide your identification number before proceeding.")
 
     # Step 2: Select the Type of Document
     if st.session_state['identity_step'] == 2:

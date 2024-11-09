@@ -34,7 +34,7 @@ if tabs == "Proof of Identity":
         if st.button("Next", key="next_step_1"):
             if country != "Select" and identification_number:
                 st.session_state['identity_step'] = 2  # Move to Step 2: Select Document Type
-                st.experimental_rerun()  # Rerun to hide Step 1 and show Step 2
+                # No need for experimental rerun, session state update will trigger the page rerun
             else:
                 st.error("Please select a country and provide your identification number before proceeding.")
 
@@ -47,20 +47,20 @@ if tabs == "Proof of Identity":
 
         if doc_type == "Identity Card":
             st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
-            st.experimental_rerun()  # Rerun to go to Identity Card details page
+            # No need for experimental rerun here either
         elif doc_type == "Passport":
             st.session_state['identity_step'] = 4  # Move to Passport Upload Page
-            st.experimental_rerun()  # Rerun to go to Passport upload page
+            # Same here, no rerun required
         elif doc_type == "Driving License":
             st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
-            st.experimental_rerun()  # Rerun to go to Driving License upload page
+            # Same here, no rerun needed
         else:
             st.error("Please select a document type.")
 
         # Back Button to Step 1
         if st.button("Back to Step 1: Select Country"):
             st.session_state['identity_step'] = 1  # Go back to Step 1
-            st.experimental_rerun()  # Rerun to go back to Step 1
+            # No need for rerun here, session state update will trigger the rerun
 
     # Identity Card Document Upload (Step 3)
     if st.session_state['identity_step'] == 3:
@@ -77,12 +77,12 @@ if tabs == "Proof of Identity":
             st.write("Identity Card document uploaded successfully!")
             if st.button("Finish", key="finish_ic"):
                 st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show success message
+                # No need for rerun after finish, it will automatically transition to the success page
 
         # Back Button to Step 2: Select Document Type
         if st.button("Back to Step 2: Select Document Type"):
             st.session_state['identity_step'] = 2  # Go back to Step 2
-            st.experimental_rerun()  # Rerun to go back to Step 2
+            # No rerun required
 
     # Driving License Document Upload (Step 5)
     if st.session_state['identity_step'] == 5:
@@ -100,12 +100,12 @@ if tabs == "Proof of Identity":
             st.write("Driving License document uploaded successfully!")
             if st.button("Finish", key="finish_dl"):
                 st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show success message
+                # No rerun needed here
 
         # Back Button to Step 2: Select Document Type
         if st.button("Back to Step 2: Select Document Type"):
             st.session_state['identity_step'] = 2  # Go back to Step 2
-            st.experimental_rerun()  # Rerun to go back to Step 2
+            # No rerun needed here
 
     # Success Page (Step 6)
     if st.session_state['identity_step'] == 6:

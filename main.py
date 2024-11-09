@@ -7,7 +7,7 @@ if 'address_step' not in st.session_state:
     st.session_state['address_step'] = 1
 
 # Main title at the top
-st.title("Document Verification Process")
+st.title("Document Verification")
 
 # Simulated Tabs using selectbox (Horizontal Tabs)
 tabs = st.selectbox("Select a process", ["Proof of Identity", "Proof of Address"], index=0)

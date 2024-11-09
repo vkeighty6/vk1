@@ -126,7 +126,12 @@ elif tabs == "Proof of Address":
         doc_type_address = st.selectbox("Select the type of document",
                                         ["Select", "Utility Bill", "Bank Statement", "Affidavit",
                                          "Government-issued Letter", "Tenancy Agreement"])
-        st.file_uploader("Upload file", type=["jpeg", "jpg", "png", "pdf", "gif"])
+
+        if doc_type_address == "Bank Statement":
+            st.file_uploader("Upload file", type=["jpeg", "jpg", "png", "pdf", "gif"])
 
         if st.button("Submit", key="address_submit"):
-            st.write("Your proof of address submission is complete.")
+            if doc_type_address == "Bank Statement" and not st.file_uploader("Upload file"):
+                st.error("Please upload a Bank Statement file.")
+            else:
+                st.write("Your proof of address submission is complete.")

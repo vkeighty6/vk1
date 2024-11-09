@@ -1,17 +1,17 @@
 import streamlit as st
 
-# Initialize session state for tracking steps if not already initialized
+# Initialize session state for tracking steps
 if 'identity_step' not in st.session_state:
     st.session_state['identity_step'] = 1
 
 if 'address_step' not in st.session_state:
     st.session_state['address_step'] = 1
 
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Proof of Identity", "Proof of Address"])
+# Tab navigation
+tabs = ["Proof of Identity", "Proof of Address"]
+selected_tab = st.selectbox("Select Section", tabs)
 
-if page == "Proof of Identity":
+if selected_tab == "Proof of Identity":
     st.title("Proof of Identity")
 
     # Step 1: Country of Document Issuance
@@ -110,7 +110,7 @@ if page == "Proof of Identity":
         st.success("You have selected 'Driving License' as your document type. No further action is required at this moment.")
         st.write("Thank you for completing the selection!")
 
-elif page == "Proof of Address":
+elif selected_tab == "Proof of Address":
     st.title("Proof of Address")
 
     # Step 1: Address Input

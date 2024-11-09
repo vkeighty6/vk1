@@ -50,7 +50,7 @@ if page == "Proof of Identity":
             st.error("Please select a document type.")
 
         # Back Button to Step 1
-        if st.button("Back to Step 1: Select Country"):
+        if st.button("Back to Step 1"):
             st.session_state['identity_step'] = 1  # Go back to Step 1
             st.experimental_rerun()  # Rerun to go back to Step 1
 
@@ -121,12 +121,11 @@ elif page == "Proof of Address":
     state_province = st.selectbox("State/Province", ["Select", "California", "Texas", "New York", "Florida", "Illinois", "Other"])
     postal_code = st.text_input("Postal/ZIP code", max_chars=10)
 
-    if st.button("Next", key="address_next"):
-        if address_line_1 and town_city != "Select" and state_province != "Select":
+    # Automatically move to Step 2 when all fields are filled
+    if address_line_1 and town_city != "Select" and state_province != "Select":
+        if st.session_state.get('address_step') == 1:
             st.session_state['address_step'] = 2
-            st.experimental_rerun()  # Rerun to show the next step
-        else:
-            st.error("Please fill in all required address fields before proceeding.")
+            st.experimental_rerun()  # Rerun to show Step 2
 
     # Step 2: Document Submission
     if st.session_state.get('address_step') == 2:

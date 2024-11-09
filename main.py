@@ -30,7 +30,7 @@ if tabs == "Proof of Identity":
         if st.button("Next", key="next_step_1"):
             if country != "Select":
                 st.session_state['identity_step'] = 2  # Move to Step 2: Select Document Type
-                st.experimental_rerun()  # Rerun the app to show the next step
+                st.experimental_update_query_params()  # Rerun the app to show the next step
             else:
                 st.error("Please select a country before proceeding.")
 
@@ -56,7 +56,7 @@ if tabs == "Proof of Identity":
                     st.session_state['identity_step'] = 4  # Move to Passport Upload Page
                 elif doc_type == "Driving License":
                     st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
-                st.experimental_rerun()  # Rerun to show the next step
+                st.experimental_update_query_params()  # Rerun to show the next step
         else:
             st.error("Please select a document type.")
 
@@ -75,7 +75,7 @@ if tabs == "Proof of Identity":
             st.write("Identity Card document uploaded successfully!")
             if st.button("Finish", key="finish_ic"):
                 st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show the success message
+                st.experimental_update_query_params()  # Rerun to show the success message
 
     # Success Page (Step 6)
     if st.session_state['identity_step'] == 6:
@@ -100,7 +100,7 @@ elif tabs == "Proof of Address":
         # Ensure address is provided before moving on
         if address_line_1 and town_city != "Select" and state_province != "Select":
             st.session_state['address_step'] = 2
-            st.experimental_rerun()  # Rerun to show the next step
+            st.experimental_update_query_params()  # Rerun to show the next step
         else:
             st.error("Please fill in all required address fields before proceeding.")
 

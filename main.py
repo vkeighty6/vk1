@@ -6,11 +6,14 @@ if 'identity_step' not in st.session_state:
 if 'address_step' not in st.session_state:
     st.session_state['address_step'] = 1
 
+# Main title at the top
+st.title("Document Verification Process")
+
 # Simulated Tabs using selectbox (Horizontal Tabs)
 tabs = st.selectbox("Select a process", ["Proof of Identity", "Proof of Address"], index=0)
 
 if tabs == "Proof of Identity":
-    st.title("Proof of Identity")
+    st.header("Proof of Identity")  # Subheader inside the Identity Tab
 
     # Step 1: Country of Document Issuance and Identification Number
     if st.session_state['identity_step'] == 1:
@@ -111,7 +114,7 @@ if tabs == "Proof of Identity":
         st.write("We will review the document and contact you if needed.")
 
 elif tabs == "Proof of Address":
-    st.title("Proof of Address")
+    st.header("Proof of Address")  # Subheader inside the Address Tab
 
     # Step 1: Address Input
     st.subheader("Step 1/2: Enter your address")

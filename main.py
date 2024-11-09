@@ -3,12 +3,13 @@ import streamlit as st
 # Initialize session state for tracking steps
 if 'identity_step' not in st.session_state:
     st.session_state['identity_step'] = 1
+if 'address_step' not in st.session_state:
+    st.session_state['address_step'] = 1
 
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Proof of Identity", "Proof of Address"])
+# Tab Navigation
+tabs = st.radio("Choose a process", ["Proof of Identity", "Proof of Address"], index=0)
 
-if page == "Proof of Identity":
+if tabs == "Proof of Identity":
     st.title("Proof of Identity")
 
     # Step 1: Country of Document Issuance and Identification Number
@@ -109,7 +110,7 @@ if page == "Proof of Identity":
         st.success("Your document has been successfully uploaded. Thank you!")
         st.write("We will review the document and contact you if needed.")
 
-elif page == "Proof of Address":
+elif tabs == "Proof of Address":
     st.title("Proof of Address")
 
     # Step 1: Address Input

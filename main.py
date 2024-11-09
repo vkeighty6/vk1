@@ -47,15 +47,16 @@ if tabs == "Proof of Identity":
             if identification_number:
                 st.write("Identification Number: ", identification_number)
 
-        if doc_type == "Identity Card":
-            st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
-            st.experimental_rerun()  # Rerun to show the next step
-        elif doc_type == "Passport":
-            st.session_state['identity_step'] = 4  # Move to Passport Upload Page
-            st.experimental_rerun()  # Rerun to show the next step
-        elif doc_type == "Driving License":
-            st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
-            st.experimental_rerun()  # Rerun to show the next step
+        # Moving between steps
+        if doc_type != "Select":
+            if st.button("Next"):
+                if doc_type == "Identity Card":
+                    st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
+                elif doc_type == "Passport":
+                    st.session_state['identity_step'] = 4  # Move to Passport Upload Page
+                elif doc_type == "Driving License":
+                    st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
+                st.experimental_rerun()  # Rerun to show the next step
         else:
             st.error("Please select a document type.")
 
@@ -86,29 +87,6 @@ if tabs == "Proof of Identity":
             st.session_state['identity_step'] = 2  # Go back to Step 2
             st.experimental_rerun()  # Rerun to go back to Step 2
 
-    # Driving License Document Upload (Step 5)
-    if st.session_state['identity_step'] == 5:
-        st.subheader("Step 5: Upload your Driving License Document")
-        st.text("Please upload the front and back sides of your Driving License.")
-
-        # File Upload for Driving License (front)
-        front_dl = st.file_uploader("Upload the front of your Driving License",
-                                    type=["jpeg", "jpg", "png", "pdf", "gif"])
-
-        # File Upload for Driving License (back)
-        back_dl = st.file_uploader("Upload the back of your Driving License", type=["jpeg", "jpg", "png", "pdf", "gif"])
-
-        if front_dl and back_dl:
-            st.write("Driving License document uploaded successfully!")
-            if st.button("Finish", key="finish_dl"):
-                st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show the success message
-
-        # Back Button to Step 2: Select Document Type
-        if st.button("Back to Step 2: Select Document Type"):
-            st.session_state['identity_step'] = 2  # Go back to Step 2
-            st.experimental_rerun()  # Rerun to go back to Step 2
-
     # Success Page (Step 6)
     if st.session_state['identity_step'] == 6:
         st.subheader("Step 6: Upload Successful!")
@@ -129,8 +107,12 @@ elif tabs == "Proof of Address":
     postal_code = st.text_input("Postal/ZIP code", max_chars=10)
 
     if st.button("Next", key="address_next"):
-        st.session_state['address_step'] = 2
-        st.experimental_rerun()  # Rerun to show the next step
+        # Ensure address is provided before moving on
+        if address_line_1 and town_city != "Select" and state_province != "Select":
+            st.session_state['address_step'] = 2
+            st.experimental_rerun()  # Rerun to show the next step
+        else:
+            st.error("Please fill in all required address fields before proceeding.")
 
     # Step 2: Document Submission
     if st.session_state.get('address_step') == 2:

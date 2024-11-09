@@ -1,15 +1,20 @@
 import streamlit as st
 
-# Initialize session state for tracking steps
+# Initialize session state for tracking steps if not already initialized
 if 'identity_step' not in st.session_state:
     st.session_state['identity_step'] = 1
 
-# Sidebar Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Proof of Identity", "Proof of Address"])
+if 'address_step' not in st.session_state:
+    st.session_state['address_step'] = 1
 
-if page == "Proof of Identity":
-    st.title("Proof of Identity")
+# Main title at the top
+st.title("Document Verification Process")
+
+# Simulated Tabs using selectbox (Horizontal Tabs)
+tabs = st.selectbox("Select a process", ["Proof of Identity", "Proof of Address"], index=0)
+
+if tabs == "Proof of Identity":
+    st.header("Proof of Identity")  # Subheader inside the Identity Tab
 
     # Step 1: Country of Document Issuance
     if st.session_state['identity_step'] == 1:
@@ -21,10 +26,11 @@ if page == "Proof of Identity":
         if country != "Select":
             st.write("Country of Document Issuance: ", country)
 
+        # Next Button for Step 1
         if st.button("Next", key="next_step_1"):
             if country != "Select":
                 st.session_state['identity_step'] = 2  # Move to Step 2: Select Document Type
-                st.experimental_rerun()  # Rerun to hide Step 1 and show Step 2
+                st.experimental_rerun()  # Rerun the app to show the next step
             else:
                 st.error("Please select a country before proceeding.")
 
@@ -35,15 +41,26 @@ if page == "Proof of Identity":
         doc_type = st.selectbox("Select the type of document",
                                 ["Select", "Passport", "Identity Card", "Driving License"])
 
+        # If Passport is selected, display "End"
+        if doc_type == "Passport":
+            st.write("End")  # Display "End" when Passport is selected
+            st.session_state['identity_step'] = 6  # Skip to the success page (Step 6)
+            st.experimental_rerun()  # Rerun the app to go to the success page
+
+        # Add "Identification Number" field only if "Identity Card" is selected
         if doc_type == "Identity Card":
-            st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
-            st.experimental_rerun()  # Rerun to go to Identity Card details page
-        elif doc_type == "Passport":
-            st.session_state['identity_step'] = 4  # Move to Passport Upload Page
-            st.experimental_rerun()  # Rerun to go to Passport upload page
-        elif doc_type == "Driving License":
-            st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
-            st.experimental_rerun()  # Rerun to go to Driving License upload page
+            identification_number = st.text_input("Identification Number", placeholder="Enter your identification number")
+            if identification_number:
+                st.write("Identification Number: ", identification_number)
+
+        # Moving between steps
+        if doc_type != "Select" and doc_type != "Passport":
+            if st.button("Next"):
+                if doc_type == "Identity Card":
+                    st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
+                elif doc_type == "Driving License":
+                    st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
+                st.experimental_rerun()  # Rerun to show the next step
         else:
             st.error("Please select a document type.")
 
@@ -67,30 +84,7 @@ if page == "Proof of Identity":
             st.write("Identity Card document uploaded successfully!")
             if st.button("Finish", key="finish_ic"):
                 st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show success message
-
-        # Back Button to Step 2: Select Document Type
-        if st.button("Back to Step 2: Select Document Type"):
-            st.session_state['identity_step'] = 2  # Go back to Step 2
-            st.experimental_rerun()  # Rerun to go back to Step 2
-
-    # Driving License Document Upload (Step 5)
-    if st.session_state['identity_step'] == 5:
-        st.subheader("Step 5: Upload your Driving License Document")
-        st.text("Please upload the front and back sides of your Driving License.")
-
-        # File Upload for Driving License (front)
-        front_dl = st.file_uploader("Upload the front of your Driving License",
-                                    type=["jpeg", "jpg", "png", "pdf", "gif"])
-
-        # File Upload for Driving License (back)
-        back_dl = st.file_uploader("Upload the back of your Driving License", type=["jpeg", "jpg", "png", "pdf", "gif"])
-
-        if front_dl and back_dl:
-            st.write("Driving License document uploaded successfully!")
-            if st.button("Finish", key="finish_dl"):
-                st.session_state['identity_step'] = 6  # Proceed to success page
-                st.experimental_rerun()  # Rerun to show success message
+                st.experimental_rerun()  # Rerun to show the success message
 
         # Back Button to Step 2: Select Document Type
         if st.button("Back to Step 2: Select Document Type"):
@@ -103,8 +97,8 @@ if page == "Proof of Identity":
         st.success("Your document has been successfully uploaded. Thank you!")
         st.write("We will review the document and contact you if needed.")
 
-elif page == "Proof of Address":
-    st.title("Proof of Address")
+elif tabs == "Proof of Address":
+    st.header("Proof of Address")  # Subheader inside the Address Tab
 
     # Step 1: Address Input
     st.subheader("Step 1/2: Enter your address")
@@ -117,7 +111,12 @@ elif page == "Proof of Address":
     postal_code = st.text_input("Postal/ZIP code", max_chars=10)
 
     if st.button("Next", key="address_next"):
-        st.session_state['address_step'] = 2
+        # Ensure address is provided before moving on
+        if address_line_1 and town_city != "Select" and state_province != "Select":
+            st.session_state['address_step'] = 2
+            st.experimental_rerun()  # Rerun to show the next step
+        else:
+            st.error("Please fill in all required address fields before proceeding.")
 
     # Step 2: Document Submission
     if st.session_state.get('address_step') == 2:

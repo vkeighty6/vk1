@@ -47,19 +47,23 @@ if tabs == "Proof of Identity":
             st.session_state['identity_step'] = 6  # Skip to the success page (Step 6)
             st.experimental_rerun()  # Rerun the app to go to the success page
 
+        # If Driving License is selected, display "End"
+        if doc_type == "Driving License":
+            st.write("End")  # Display "End" when Driving License is selected
+            st.session_state['identity_step'] = 6  # Skip to the success page (Step 6)
+            st.experimental_rerun()  # Rerun the app to go to the success page
+
         # Add "Identification Number" field only if "Identity Card" is selected
         if doc_type == "Identity Card":
             identification_number = st.text_input("Identification Number", placeholder="Enter your identification number")
             if identification_number:
                 st.write("Identification Number: ", identification_number)
 
-        # Moving between steps
-        if doc_type != "Select" and doc_type != "Passport":
+        # Moving between steps for other document types
+        if doc_type != "Select" and doc_type != "Passport" and doc_type != "Driving License":
             if st.button("Next"):
                 if doc_type == "Identity Card":
                     st.session_state['identity_step'] = 3  # Move to Identity Card Details Page
-                elif doc_type == "Driving License":
-                    st.session_state['identity_step'] = 5  # Move to Driving License Upload Page
                 st.experimental_rerun()  # Rerun to show the next step
         else:
             st.error("Please select a document type.")

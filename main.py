@@ -1,8 +1,9 @@
 import streamlit as st
 
-# Initialize session state for tracking steps
+# Initialize session state for tracking steps if not already initialized
 if 'identity_step' not in st.session_state:
     st.session_state['identity_step'] = 1
+
 if 'address_step' not in st.session_state:
     st.session_state['address_step'] = 1
 

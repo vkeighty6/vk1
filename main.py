@@ -60,11 +60,6 @@ if tabs == "Proof of Identity":
         else:
             st.error("Please select a document type.")
 
-        # Back Button to Step 1
-        if st.button("Back to Step 1: Select Country"):
-            st.session_state['identity_step'] = 1  # Go back to Step 1
-            st.experimental_rerun()  # Rerun to go back to Step 1
-
     # Identity Card Document Upload (Step 3)
     if st.session_state['identity_step'] == 3:
         st.subheader("Step 3: Upload your Identity Card Document")
@@ -81,11 +76,6 @@ if tabs == "Proof of Identity":
             if st.button("Finish", key="finish_ic"):
                 st.session_state['identity_step'] = 6  # Proceed to success page
                 st.experimental_rerun()  # Rerun to show the success message
-
-        # Back Button to Step 2: Select Document Type
-        if st.button("Back to Step 2: Select Document Type"):
-            st.session_state['identity_step'] = 2  # Go back to Step 2
-            st.experimental_rerun()  # Rerun to go back to Step 2
 
     # Success Page (Step 6)
     if st.session_state['identity_step'] == 6:
